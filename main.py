@@ -147,3 +147,4 @@ client_semyon = create_client("Semyon", "Migal", None, "login", "Hardpass", "Act
 client_semyon.add_client()
 print(client_semyon)
 client_semyon.print_account(account_active.get_account_info()['Номер счета'])
+client_semyon.get_total_balance()

@@ -21,3 +21,6 @@ class AccountAllreadyExist(Exception):
 
 class TimeError(Exception):
     pass
+
+class AccountBaned(Exception):
+    pass

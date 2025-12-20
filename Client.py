@@ -20,7 +20,7 @@ class Client():
         self.client_login = client_login
         self.client_password = client_password
         self.client_status = client_status
-        self. accounts_list = accounts_list
+        self.accounts_list = accounts_list
         self.contacts = contacts
         self.age = age
         self.authenticate = False
@@ -28,18 +28,20 @@ class Client():
         if self.age <= 18 and age is isinstance(age, int):
             raise AgeError('Ваш возраст должен быть больше 18-ти лет и целым числом')
 
-
+    # Функция создания аккаунта клиента и генерации ему айди
     def add_client(self):
         if self.client_id is None:
             self.client_id = str(uuid.uuid4())[:8].upper()
         else:
             raise AccountAllreadyExist('У вас уже есть аккаунт')
         print('Ваш аккаунт создан!')
-        print(f"Имя: {self.name}"
-              f'Фамилия: {self.surname}'
-              f"Номер телефона: {self.contacts}"
+        print(f"Имя: {self.name}\n"
+              f'Фамилия: {self.surname}\n'
+              f"Номер телефона: {self.contacts}\n"
               f"Возраст: {self.age}")
 
+
+    # Создание всех типов счетов
     def open_account(self, type_of_account, balance, percent_for_saving, overdraft_sum, commision, limits, investment_packs: dict, actives: dict):
         if type_of_account == "Обычный":
             account = BankAccount(balance=balance, user_data={
@@ -74,71 +76,80 @@ class Client():
 
         self.accounts_list.append(account.get_account_info())
 
-
-
-    def _check_authenticate(self):
-        if self.authenticate != True:
-            print("Войдите в аккаунт")
+    # авторизация ставит тру, есть 3 попытки
+    def authenticate_client(self):
+        i = 0
+        while self.authenticate == False:
             login = input("Введите логин: ")
             password = input("Введите пароль: ")
-            self.authenticate_client(login, password)
+            if self.client_login == login and self.client_password == password:
+                self.authenticate = True
+                print("Вы вошли в свой аккаунт!")
+                i = 0
+            else:
+                i = i + 1
+                if  i == 3:
+                    self.client_status = "Заблокирован"
+                    raise AccountBaned("ВВаш аккаунт заблокирован")
+                else:
+                    print("Неверный логин или пароль\n"
+                        f"У вас осталось {3 - i} попытка(ки)")
+                    self._suspected_operation()
+                    
+                    
+
+    # проверка логина и пароля перед операциями
+    def _check_authenticate(self):
+        if self.authenticate is not True:
+            print("Войдите в аккаунт")
+            self.authenticate_client()
         else: pass
-
+    # оповещение на телефон\мессенджеры клиента
     def send_message_to_clien(self, message):
+        print(f"Сообщение отправленно: {message}")
         pass
-
+    # Подозрительная операция
     def _suspected_operation(self):
         message = "ПОДОЗРИТЕЛЬЯ ОПЕРАЦИЯ"
         self.send_message_to_clien(message)
         print(message)
-
+    # Проверка времени
     def _check_time(self):
         startime = time(0, 0, 0)
         endtime = time(5,0,0)
         time_now = datetime.now().time()
-        if time_now in range(startime, endtime):
+        if time_now < startime and time_now > endtime:
             raise TimeError('В это время невозможно совершить данную операцию')
 
-
+    # Поиск счета по их айдишнику, в списке аккаунтов пробегаетмся по всем и сравнимаем айди
     def search_account_by_id(self, id):
         self._check_time()
         #self._check_authenticate()
         for account in self.accounts_list:
-            if account["Номер счета"] == id:
+            if account.get_account_info()["Номер счета"] == id:
                 id_account = self.accounts_list.index(account)
         account = self.accounts_list[id_account]
         return account
-
+    # Закрытие счета
     def close_account(self, id):
         self._check_time()
         #self._check_authenticate()
         account = self.search_account_by_id(id)
         account.set_account_info(name_param="Статус", param="Закрыт")
-        print(f"Вы закрыли счет с номером {account.account_id}")
-
+        print(f"Вы закрыли счет с номером {account.get_account_info()["Номер счета"]}")
+    # Заморозка
     def freeze_account(self, id):
         self._check_time()
         #self._check_authenticate()
         account = self.search_account_by_id(id)
         account.set_account_info(name_param="Статус", param="Заморожен")
-        print(f"Вы заморозили счет с номером {account.account_id}")
+        print(f"Вы заморозили счет с номером {account.get_account_info()["Номер счета"]}")
 
+    
 
-    def authenticate_client(self, login, password):
-        for i in range(3):
-            if self.client_login == login and self.client_password == password:
-                self.authenticate = True
-                return self.authenticate
-            else:
-                if i != 3:
-                    print("Вы ввели неправлиьно логин и пароль"
-                        f"У вас осталость {3-i} попытки")
-                else:
-                    print("Вак аккаунт заблокирован")
-                    self.client_status = "Заблокирован"
-
+    # весь баланс, пробегаемся по списку и считаем балансы
     def get_total_balance(self):
-        #self._check_authenticate()
+        self._check_authenticate()
         total_balance = 0.0
         for account_dict in self.accounts_list:
             balance_value = account_dict.get_account_info()['Баланс']
