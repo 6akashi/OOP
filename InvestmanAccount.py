@@ -22,7 +22,7 @@ class InvestmentAccount(BankAccount):
                      'etf': 0.11
                  }):
         super().__init__(balance, user_data, account_status,
-                         user_id, currency, limits, overdraft, overdraft_sum)
+                         user_id, currency, limits, overdraft, overdraft_sum = 0.0)
 
         self.investment_packs = investment_packs
         self.actives = actives
@@ -34,7 +34,7 @@ class InvestmentAccount(BankAccount):
 
     # расчет суммы процентов всех активов
     def index_from_actives(self):
-        return sum(self.investment_packs.values())
+        return sum(self.actives.values())
 
     # Расчет годового заработка с активов
     def project_yearly_growth(self):

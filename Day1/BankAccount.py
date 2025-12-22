@@ -5,13 +5,13 @@ from Day1.Errors import *
 
 
 class BankAccount(AbstractAccount):
-    def __init__(self, balance, user_data, account_status, user_id=None, currency: str = 'RUB', limits: float = 10000.0, overdraft: bool = False, overdraft_sum: float = None):
+    def __init__(self, balance, user_data, account_status, user_id=None, currency: str = 'RUB', limits: float = 10000.0, overdraft: bool = False, overdraft_sum: float = 0.0):
         self.type_of_account = "Обычный"  # 2 дз
         self.limits = limits  # 2 дз
         self.overdraft = overdraft  # 2 дз
 
         # Проверка данных
-        if not user_data['name'] or not isinstance(user_data['name'], str):
+        if not user_data['Имя:'] or not isinstance(user_data['Имя:'], str):
             raise InvalidOperationError(
                 "Имя владельца обязательно должно быть строкой")
         if not isinstance(balance, (int, float)) or balance < 0:

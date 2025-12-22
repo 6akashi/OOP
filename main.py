@@ -136,11 +136,11 @@ def create_client(name, surname, client_id, client_login, client_password, clien
     return client
 
 client_semyon = create_client("Semyon", "Migal", None, "login", "Hardpass", "Active",
-                              accounts_list=(account_active,
+                              accounts_list=list((account_active,
                                              account_frozen,
                                              account_saving_active,
                                              account_premium_active,
-                                             account_investment_active), contacts="+79998885533", age = 22)
+                                             account_investment_active)), contacts="+79998885533", age = 14)
 
 
 

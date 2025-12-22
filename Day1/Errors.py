@@ -24,3 +24,6 @@ class TimeError(Exception):
 
 class AccountBaned(Exception):
     pass
+
+class QueueIsFull(Exception):
+    pass

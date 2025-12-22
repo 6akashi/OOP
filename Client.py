@@ -25,8 +25,10 @@ class Client():
         self.age = age
         self.authenticate = False
         self.client_rank:int = 1
-        if self.age <= 18 and age is isinstance(age, int):
-            raise AgeError('Ваш возраст должен быть больше 18-ти лет и целым числом')
+        if not isinstance(age, int):
+            raise TypeError('Возраст должен быть целым числом')
+        if self.age < 18 and not isinstance(age, int):
+            raise AgeError('Ваш возраст должен быть больше 18-ти лет')
 
     # Функция создания аккаунта клиента и генерации ему айди
     def add_client(self):
@@ -48,28 +50,28 @@ class Client():
                 "Имя: ": self.name,
                 "Фамилия": self.surname,
                 "Номер телефона": self.contacts
-            })
+            }, account_status="Активный")
 
-        if type_of_account == "Сберегательный":
+        elif type_of_account == "Сберегательный":
             account = SavingsAccount(balance=balance, user_data={
                 "Имя: ": self.name,
                 "Фамилия": self.surname,
                 "Номер телефона": self.contacts
-            }, user_percent = percent_for_saving)
+            }, user_percent = percent_for_saving, account_status="Активный")
 
-        if type_of_account == "Премиум":
+        elif type_of_account == "Премиум":
             account = PremiumAccount(balance=balance, user_data={
-                "Имя: ": self.name,
+                "Имя:": self.name,
                 "Фамилия": self.surname,
                 "Номер телефона": self.contacts
-            }, overdraft_sum=overdraft_sum, commision=commision, limits=limits)
+            }, overdraft_sum=overdraft_sum, commision=commision, limits=limits, account_status="Активный")
 
-        if type_of_account == "Инвестиционный":
+        elif type_of_account == "Инвестиционный":
             account = InvestmentAccount(balance=balance, user_data={
                 "Имя: ": self.name,
                 "Фамилия": self.surname,
                 "Номер телефона": self.contacts
-            }, investment_packs=investment_packs, actives=actives)
+            }, investment_packs=investment_packs, actives=actives, account_status="Активный")
 
         else:
             print("Такого типа счета не существует")
@@ -118,7 +120,7 @@ class Client():
         startime = time(0, 0, 0)
         endtime = time(5,0,0)
         time_now = datetime.now().time()
-        if time_now < startime and time_now > endtime:
+        if time_now > startime and time_now < endtime:
             raise TimeError('В это время невозможно совершить данную операцию')
 
     # Поиск счета по их айдишнику, в списке аккаунтов пробегаетмся по всем и сравнимаем айди
@@ -136,14 +138,14 @@ class Client():
         #self._check_authenticate()
         account = self.search_account_by_id(id)
         account.set_account_info(name_param="Статус", param="Закрыт")
-        print(f"Вы закрыли счет с номером {account.get_account_info()["Номер счета"]}")
+        print(f"Вы закрыли счет с номером {account.get_account_info()['Номер счета']}")
     # Заморозка
     def freeze_account(self, id):
         self._check_time()
         #self._check_authenticate()
         account = self.search_account_by_id(id)
         account.set_account_info(name_param="Статус", param="Заморожен")
-        print(f"Вы заморозили счет с номером {account.get_account_info()["Номер счета"]}")
+        print(f"Вы заморозили счет с номером {account.get_account_info()['Номер счета']}")
 
     
 
@@ -161,6 +163,10 @@ class Client():
     def get_client_rank(self):
         return self.client_rank
 
+    # добавлено в 4 день, для получения отдельного аккаунта для транзакций
+    def get_my_account(self, id):
+        account = self.search_account_by_id(id)
+        return account
 
     def get_client_info(self):
         return {

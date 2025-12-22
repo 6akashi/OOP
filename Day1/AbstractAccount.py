@@ -33,7 +33,7 @@ class AbstractAccount():
         pass
 
     @abstractmethod
-    def get_account_info(self):
+    def get_account_info(self) -> dict:
         pass
 
     def __str__(self):
