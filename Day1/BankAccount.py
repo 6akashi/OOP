@@ -11,7 +11,7 @@ class BankAccount(AbstractAccount):
         self.overdraft = overdraft  # 2 дз
 
         # Проверка данных
-        if not user_data['Имя:'] or not isinstance(user_data['Имя:'], str):
+        if not user_data['name'] or not isinstance(user_data['name'], str):
             raise InvalidOperationError(
                 "Имя владельца обязательно должно быть строкой")
         if not isinstance(balance, (int, float)) or balance < 0:
@@ -100,6 +100,7 @@ class BankAccount(AbstractAccount):
             "Тип счета": self.type_of_account,
             "Клиент": self.user_data,
             "Номер счета": self.user_id,
+            "Валюта": self.currency,
             "Статус": self.account_status,
             "Баланс": self.balance
         }

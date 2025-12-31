@@ -27,7 +27,7 @@ class Client():
         self.client_rank:int = 1
         if not isinstance(age, int):
             raise TypeError('Возраст должен быть целым числом')
-        if self.age < 18 and not isinstance(age, int):
+        if self.age < 18:
             raise AgeError('Ваш возраст должен быть больше 18-ти лет')
 
     # Функция создания аккаунта клиента и генерации ему айди
@@ -125,7 +125,7 @@ class Client():
 
     # Поиск счета по их айдишнику, в списке аккаунтов пробегаетмся по всем и сравнимаем айди
     def search_account_by_id(self, id):
-        self._check_time()
+        #self._check_time()
         #self._check_authenticate()
         for account in self.accounts_list:
             if account.get_account_info()["Номер счета"] == id:
@@ -134,14 +134,14 @@ class Client():
         return account
     # Закрытие счета
     def close_account(self, id):
-        self._check_time()
+        #self._check_time()
         #self._check_authenticate()
         account = self.search_account_by_id(id)
         account.set_account_info(name_param="Статус", param="Закрыт")
         print(f"Вы закрыли счет с номером {account.get_account_info()['Номер счета']}")
     # Заморозка
     def freeze_account(self, id):
-        self._check_time()
+        #self._check_time()
         #self._check_authenticate()
         account = self.search_account_by_id(id)
         account.set_account_info(name_param="Статус", param="Заморожен")
