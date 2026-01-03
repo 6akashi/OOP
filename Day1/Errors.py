@@ -12,6 +12,8 @@ class AccountFrozenError(Exception):
 class AccountClosedError(Exception):
     pass
 
+class NotEnoughMoney(Exception):
+    pass
 
 class InsufficientFundsError(Exception):
     pass
@@ -26,4 +28,10 @@ class AccountBaned(Exception):
     pass
 
 class QueueIsFull(Exception):
+    pass
+
+class InvalidCurrency(Exception):
+    pass
+
+class ManyTries(Exception):
     pass

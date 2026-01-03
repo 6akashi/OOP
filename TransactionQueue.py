@@ -8,6 +8,11 @@ class TransactionQueue:
         self.transaction_queue: list = []
         self.max_queue_len = 10
 
+    """
+    Добавление в очередь
+    Если премиум, то всегда в начало, если отклоненные то всегда в конец
+    """
+
     def add_to_queue(self, transaction: Transaction):
         self._check_queue()
         premium_transactions = 0
@@ -48,6 +53,11 @@ class TransactionQueue:
             return True
         else: return False
     
+    """
+    Функция для вставки обычный операций, до отложенных
+    по обратному списку смотрим сколько отложенных в конце списка и вставка обычной
+    перед ними
+    """
     def before_deffered_transaction(self, transaction: Transaction):
         non_deffered_operation = len(self.transaction_queue)-1
         if self.transaction_queue[len(self.transaction_queue)-1].get_transaction_info()["Type"] == "Отложенная":
@@ -65,6 +75,8 @@ class TransactionQueue:
         self.transaction_queue.pop(self.transaction_queue.index(transaction))
         return self.transaction_queue
 
+    def delete_from_queue(self, transaction: Transaction):
+        self.transaction_queue.pop(self.transaction_queue.index(transaction))
 
     def print_queue(self):
         info = []
