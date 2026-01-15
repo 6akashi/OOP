@@ -195,7 +195,8 @@ class TransactionProccessor:
             # Пропускаем, если транзакция уже удалена
             if trans not in transaction_queue.transaction_queue:
                 continue
-
+            trans.sender.accounts_history.append(trans.reciever_account_id)
+            trans.reciever.accounts_history.append(trans.sender_account_id)
             print(f"\n=== Обработка транзакции {trans.transaction_id} ===")
             print(f"Сумма: {trans.transaction_summ}")
             print(f"Отправитель: {trans.sender.name} -> Получатель: {trans.reciever.name}")

@@ -17,11 +17,12 @@ class Transaction:
         self.sender_currency = sender.get_my_account(sender_account_id).get_account_info().get("Валюта")
         self.reciever_currency = reciever.get_my_account(reciever_account_id).get_account_info().get("Валюта")
         self.transaction_status = "Выполняется"
-        self.time_stamp = datetime.datetime
+        self.time_stamp = datetime.datetime.now()
         self.transaction_type = "Usual"
         self.priority = False
         self.transaction_id = None
         self.number_of_retries = 0
+        
 
         if self.transaction_id is None:
             self.transaction_id = str(uuid.uuid4())[:8].upper()

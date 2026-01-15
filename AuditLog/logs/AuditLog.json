@@ -1,0 +1,15 @@
+[
+  {
+    "date": "06.01.2026 07:30:56",
+    "log": {
+      "ID": "test1",
+      "Time": "06.01.2026 07:30:56",
+      "Level": "CRITICAL",
+      "Message": "Первое сообщение",
+      "Event type": "TEST",
+      "User ID": "",
+      "Details": {}
+    }
+  },
+  "Log: {'ID': 'test1', 'Time': '06.01.2026 07:32:45', 'Level': 'CRITICAL', 'Message': 'Первое сообщение', 'Event type': 'TEST', 'User ID': '', 'Details': {}}"
+]

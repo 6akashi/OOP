@@ -25,6 +25,7 @@ class Client():
         self.age = age
         self.authenticate = False
         self.client_rank:int = 1
+        self.accounts_history: list = [] #For day 5
         if not isinstance(age, int):
             raise TypeError('Возраст должен быть целым числом')
         if self.age < 18:
@@ -76,7 +77,7 @@ class Client():
         else:
             print("Такого типа счета не существует")
 
-        self.accounts_list.append(account.get_account_info())
+        self.accounts_list.append(account)
 
     # авторизация ставит тру, есть 3 попытки
     def authenticate_client(self):
@@ -130,6 +131,8 @@ class Client():
         for account in self.accounts_list:
             if account.get_account_info()["Номер счета"] == id:
                 id_account = self.accounts_list.index(account)
+                if id_account is None:
+                    raise IndexError("Такого айдишника нет")
         account = self.accounts_list[id_account]
         return account
     # Закрытие счета
@@ -154,7 +157,10 @@ class Client():
         self._check_authenticate()
         total_balance = 0.0
         for account_dict in self.accounts_list:
+            if account_dict.get_account_info()['Баланс'] is None:
+                continue
             balance_value = account_dict.get_account_info()['Баланс']
+            
             total_balance += balance_value
 
         print(f'Общий баланс {total_balance}')
